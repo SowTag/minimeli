@@ -1,0 +1,19 @@
+name: minimeli
+
+services:
+  database:
+    image: mysql:8.1
+
+    environment:
+      MYSQL_DATABASE: minimeli
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+
+    volumes:
+      - database_data:/var/lib/mysql
+
+    ports:
+      - "3306:3306"
+
+
+volumes:
+  database_data:

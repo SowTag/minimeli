@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: products-service
+
+  config:
+    import: configserver:${CONFIG_SERVER_URL}
+
+  profiles:
+    active: mysql
