@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+option java_multiple_files = true;
+option java_package = "dev.maddock.minimeli.pricingservice";
+option java_outer_classname = "PricingProto";
+
+service PricingService {
+  rpc GetFinalPrice (GetFinalPriceRequest) returns (GetFinalPriceResponse);
+  rpc UpdateBasePrice (SetBasePriceRequest) returns (google.protobuf.Empty);
+}
+
+message GetFinalPriceRequest {
+  string productId = 1;
+}
+
+message GetFinalPriceResponse {
+  string finalPrice = 1;
+}
+
+message SetBasePriceRequest {
+  string productId = 1;
+  string basePrice = 2;
+}
