@@ -1,1 +1,3 @@
 dev.maddock.minimeli.servicecommons.config.SecurityConfig
+dev.maddock.minimeli.servicecommons.config.WebConfig
+dev.maddock.minimeli.servicecommons.annotation.resolver.CurrentUserResolver
