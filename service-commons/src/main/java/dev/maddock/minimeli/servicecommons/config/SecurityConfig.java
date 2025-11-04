@@ -64,33 +64,9 @@ class SecurityConfig {
             log.error("Client ID not set. Authority converters may not work!");
         }
 
-        Converter<Jwt, Collection<GrantedAuthority>> defaultAuthorityConverter = new JwtGrantedAuthoritiesConverter();
-
-        Converter<Jwt, Collection<GrantedAuthority>> keycloakAuthorityConverter = new KeycloakJwtAuthoritiesConverter(clientId);
-
-        Converter<Jwt, Collection<GrantedAuthority>> compositeAuthorityConverter = jwt -> {
-
-            Collection<GrantedAuthority> defaultAuthorities = defaultAuthorityConverter.convert(jwt);
-
-            if (defaultAuthorities == null) {
-                defaultAuthorities = Collections.emptySet();
-            }
-
-            Collection<GrantedAuthority> keycloakAuthorities = keycloakAuthorityConverter.convert(jwt);
-
-            if (keycloakAuthorities == null) {
-                keycloakAuthorities = Collections.emptySet();
-            }
-
-            return Stream.concat(
-                    defaultAuthorities.stream(),
-                    keycloakAuthorities.stream()
-            ).collect(Collectors.toSet());
-        };
-
         JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
 
-        converter.setJwtGrantedAuthoritiesConverter(compositeAuthorityConverter);
+        converter.setJwtGrantedAuthoritiesConverter(new KeycloakJwtAuthoritiesConverter(clientId));
 
         return converter;
     }
