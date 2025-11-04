@@ -45,6 +45,7 @@ class SecurityConfig {
         return http -> {
             try {
                 http.authorizeHttpRequests(req -> {
+                    req.requestMatchers("/error", "/actuator/**").permitAll();
                     req.anyRequest().authenticated();
                 });
             } catch (Exception e) {
