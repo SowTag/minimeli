@@ -1,5 +1,6 @@
 package dev.maddock.minimeli.servicecommons.config;
 
+import lombok.NonNull;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,7 +23,7 @@ class KeycloakJwtAuthoritiesConverter implements Converter<Jwt, Collection<Grant
     }
 
     @Override
-    public Collection<GrantedAuthority> convert(Jwt source) {
+    public Collection<GrantedAuthority> convert(@NonNull Jwt source) {
 
         if (clientId == null || clientId.isEmpty()) {
             return Collections.emptyList();
