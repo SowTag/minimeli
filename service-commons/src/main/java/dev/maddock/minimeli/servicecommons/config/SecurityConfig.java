@@ -1,7 +1,10 @@
 package dev.maddock.minimeli.servicecommons.config;
 
+import dev.maddock.minimeli.servicecommons.config.customizers.AuthorizationRequestMatcherCustomizer;
 import dev.maddock.minimeli.servicecommons.config.customizers.HttpSecurityOAuth2ResourceServerCustomizer;
 import dev.maddock.minimeli.servicecommons.config.customizers.HttpSecurityRequestMatchersCustomizer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +20,8 @@ import java.util.List;
 @EnableWebSecurity
 @EnableMethodSecurity
 class SecurityConfig {
+    private static final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
+
     @Bean
     public SecurityFilterChain filterChain(List<Customizer<HttpSecurity>> customizers, HttpSecurity http) throws Exception {
 
@@ -41,10 +46,16 @@ class SecurityConfig {
 
     @Bean
     @ConditionalOnMissingBean(HttpSecurityRequestMatchersCustomizer.class)
-    public HttpSecurityRequestMatchersCustomizer requestMatchersConfig() {
+    public HttpSecurityRequestMatchersCustomizer requestMatchersConfig(List<AuthorizationRequestMatcherCustomizer> authorizationRequestMatcherCustomizers) {
+        log.info("Applying {} AuthorizationRequestMatcherCustomizer(s)", authorizationRequestMatcherCustomizers.size());
+
         return http -> {
             try {
                 http.authorizeHttpRequests(req -> {
+                    for (AuthorizationRequestMatcherCustomizer customizer : authorizationRequestMatcherCustomizers) {
+                        customizer.customize(req);
+                    }
+
                     req.requestMatchers("/error", "/actuator/**").permitAll();
                     req.anyRequest().authenticated();
                 });
