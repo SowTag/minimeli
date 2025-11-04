@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "minimeli.auth.client-id",
+      "type": "java.lang.String",
+      "description": "Client ID for this application, will be used to parse JWT authorities."
+    }
+  ]
+}

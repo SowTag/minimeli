@@ -1,0 +1,14 @@
+###
+GET http://localhost:10002/public
+
+###
+GET http://localhost:10002/private
+Authorization: Bearer {{$auth.token("user1")}}
+
+###
+GET http://localhost:10002/private-normal
+Authorization: Bearer {{$auth.token("user1")}}
+
+###
+GET http://localhost:10002/private-normal2
+Authorization: Bearer {{$auth.token("user1")}}
