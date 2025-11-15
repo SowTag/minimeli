@@ -6,4 +6,4 @@ spring:
     import: configserver:${CONFIG_SERVER_URL}
 
   profiles:
-    active: mysql, keycloak
+    active: postgres, keycloak

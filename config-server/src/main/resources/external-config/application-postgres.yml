@@ -1,0 +1,4 @@
+spring:
+  datasource:
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/minimeli}
+    username: ${DATASOURCE_USERNAME:postgres}

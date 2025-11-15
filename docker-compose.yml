@@ -2,25 +2,32 @@ name: minimeli
 
 services:
   database:
-    image: mysql:8.1
+    image: postgres:18
 
     environment:
-      MYSQL_DATABASE: minimeli
-      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+      POSTGRES_DB: minimeli
+      POSTGRES_HOST_AUTH_METHOD: trust
 
     volumes:
-      - database_data:/var/lib/mysql
+      - database_data:/var/lib/postgresql
 
     ports:
-      - "3306:3306"
+      - "5432:5432"
+
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   idp:
     image: quay.io/keycloak/keycloak
 
     environment:
-      KC_DB: mysql
-      KC_DB_URL: jdbc:mysql://database:3306/keycloak
-      KC_DB_USERNAME: root
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://database:5432/keycloak
+      KC_DB_USERNAME: postgres
 
       KC_BOOTSTRAP_ADMIN_USERNAME: root
       KC_BOOTSTRAP_ADMIN_PASSWORD: password
@@ -29,6 +36,11 @@ services:
 
     ports:
       - "8080:8080"
+
+    depends_on:
+      database:
+        condition: service_healthy
+
 
 
 volumes:
