@@ -16,7 +16,7 @@ public record CategoryDto(UUID id, String title, String description, UUID parent
                 .id(category.getId())
                 .title(category.getTitle())
                 .description(category.getDescription())
-                .parentCategoryId(category.getParentCategory().getId())
+                .parentCategoryId(category.getParentCategory() != null ? category.getParentCategory().getId() : null)
                 .build();
     }
 }
