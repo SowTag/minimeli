@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 /**
  * DTO for {@link dev.maddock.minimeli.productsservice.entity.Category}
