@@ -6,6 +6,9 @@ import lombok.Setter;
 
 import java.util.UUID;
 
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
