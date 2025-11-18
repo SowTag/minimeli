@@ -11,5 +11,6 @@ import java.io.Serializable;
  */
 public record CreateCategoryRequest(
         @NotBlank(message = "Title can't be blank") @Size(message = "Title must be 2-128 characters long", min = 2) String title,
-        @NullOrNotBlank(message = "Description must be either null or not blank") String description) implements Serializable {
+        @NullOrNotBlank(message = "Description must be either null or not blank") String description,
+        UUID parentCategoryId) implements Serializable {
 }
