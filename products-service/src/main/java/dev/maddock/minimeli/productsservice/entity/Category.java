@@ -1,8 +1,7 @@
 package dev.maddock.minimeli.productsservice.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
 
