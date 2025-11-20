@@ -6,21 +6,23 @@ import dev.maddock.minimeli.productsservice.dto.category.CreateCategoryRequest;
 import dev.maddock.minimeli.productsservice.entity.Category;
 import dev.maddock.minimeli.productsservice.exception.CategoryNotFoundException;
 import dev.maddock.minimeli.productsservice.repository.CategoryRepository;
+import dev.maddock.minimeli.productsservice.service.CategoryPathService;
 import dev.maddock.minimeli.productsservice.service.CategoryService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @Service
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
-
-    public CategoryServiceImpl(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
+    private final CategoryPathService categoryPathService;
 
     @Override
+    @Transactional
     public CategoryDto createCategory(CreateCategoryRequest request) {
         var newCategoryBuilder = Category.builder()
                 .title(request.title())
@@ -34,7 +36,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         Category savedCategory = categoryRepository.save(newCategoryBuilder.build());
 
-        // TODO: Update closure table
+        categoryPathService.createCategoryPaths(savedCategory);
 
         return CategoryDto.from(savedCategory);
 
