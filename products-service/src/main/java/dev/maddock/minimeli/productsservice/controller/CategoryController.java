@@ -3,6 +3,7 @@ package dev.maddock.minimeli.productsservice.controller;
 import dev.maddock.minimeli.productsservice.dto.category.CategoryDto;
 import dev.maddock.minimeli.productsservice.dto.category.CategoryTreeNode;
 import dev.maddock.minimeli.productsservice.dto.category.CreateCategoryRequest;
+import dev.maddock.minimeli.productsservice.service.CategoryPathService;
 import dev.maddock.minimeli.productsservice.service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 class CategoryController {
     private final CategoryService categoryService;
+    private final CategoryPathService categoryPathService;
 
     @GetMapping("/{id}")
     public ResponseEntity<CategoryDto> getCategoryById(@PathVariable UUID id) {
@@ -33,6 +35,12 @@ class CategoryController {
     @GetMapping("/tree")
     public ResponseEntity<List<CategoryTreeNode>> getAllCategoriesAsTree() {
         return ResponseEntity.ok(categoryService.getAllCategoriesAsTree());
+    }
+
+    @PostMapping("/tree/regenerate")
+    public ResponseEntity<Void> regenerateClosureTable() {
+        categoryPathService.regenerateCategoryPaths();
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping
