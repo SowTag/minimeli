@@ -28,7 +28,7 @@ public class CategoryPathServiceImpl implements CategoryPathService {
         List<CategoryPath> paths = new ArrayList<>();
 
         for (Category category : categories) {
-            paths.addAll(createCategoryPathsInternal(category));
+            paths.addAll(createCategoryPathsInternal(paths, category));
         }
 
         categoryPathRepository.saveAll(paths);
@@ -36,7 +36,7 @@ public class CategoryPathServiceImpl implements CategoryPathService {
 
     @Override
     public void createCategoryPaths(Category category) {
-        List<CategoryPath> paths = createCategoryPathsInternal(category);
+        List<CategoryPath> paths = createCategoryPathsInternal(new ArrayList<>(), category);
 
         categoryPathRepository.saveAll(paths);
     }
@@ -46,9 +46,7 @@ public class CategoryPathServiceImpl implements CategoryPathService {
         categoryPathRepository.deleteAllByDescendant(category);
     }
 
-    private List<CategoryPath> createCategoryPathsInternal(Category category) {
-        List<CategoryPath> paths = new ArrayList<>();
-
+    private List<CategoryPath> createCategoryPathsInternal(List<CategoryPath> pathList, Category category) {
         int depth = 0;
         Category current = category;
         while (current != null) {
@@ -56,12 +54,12 @@ public class CategoryPathServiceImpl implements CategoryPathService {
             path.setAncestor(current);
             path.setDescendant(category);
             path.setDepth(depth);
-            paths.add(path);
+            pathList.add(path);
 
             current = current.getParentCategory();
             depth++;
         }
 
-        return paths;
+        return pathList;
     }
 }
